@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/character-index.css' %}"/>
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+  <h1>Character List</h1>
+  <img src="" alt="" />
+  <img src="" alt="" />
+  <img src="" alt="" />
+  <img src="" alt="" />
+</section>
+
+<section class="card-container">
+  {% for character in characters %}
+    <div class="card">
+      {% comment %} Add this line {% endcomment %}
+      <a href="{% url 'characters_detail' character.id %}">
+        <div class="card-content">
+          <div class="card-img-container">
+          {% if character.photo.url %}
+            <img 
+                src="" 
+                alt=""
+                class="usr-img"
+              >
+          {% else %}
+            <img 
+              src="" 
+              alt=""
+            >
+          {% endif %}
+          </div>
+          <h2 class="card-title">{{  }}</h2>
+         
+        </div>
+      {% comment %} And this line {% endcomment %}
+      </a>
+    </div>
+  {% endfor %}
+</section>
+
+{% endblock %}
