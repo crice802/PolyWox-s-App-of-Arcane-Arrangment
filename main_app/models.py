@@ -2,6 +2,8 @@ from django.db import models
 from django.db.models.fields import CharField
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 import requests
 # Create your models here.
 CLASS_CHOICE = (
@@ -22,14 +24,23 @@ CLASS_CHOICE = (
 class Character(models.Model):
   player = models.ForeignKey(User, on_delete=models.CASCADE)
   name = models.CharField(max_length=50)
-  char_class = models.CharField(max_length=8,
+  char_class = models.CharField(max_length=9,
   choices=CLASS_CHOICE,
   default=CLASS_CHOICE[0][0]
   )
-  level = models.IntegerField(max=20, min=1)
-  spell_list = models.CharField()
+  level = models.IntegerField(
+    default=1,
+    validators=[MaxValueValidator(20), MinValueValidator(1)]
+  )
+  spell_list = models.CharField(max_length=10000)
   
 
 class Photo(models.Model):
   url = models.CharField(max_length=250)
   character = models.OneToOneField(Character, on_delete=models.CASCADE)
+
+class Spell(models.Model):
+  name = models.CharField(max_length=50)
+  description = models.CharField(max_length=10000)
+  level = models.IntegerField()
+  higher_level = models.CharField(max_length=10000)

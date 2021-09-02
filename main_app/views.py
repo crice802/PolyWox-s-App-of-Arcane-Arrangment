@@ -1,3 +1,4 @@
+from main_app.models import Spell
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.views import LoginView
@@ -5,12 +6,17 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from os import name
+from django.http import response
+import requests
+import json
 
 # Create your views here.
 #home view
 class Home(LoginView):
   template_name = 'home.html'
 #character index view
+@login_required
 def char_index(request):
   return HttpResponse('<h1>this is char index page</h1>')
 
@@ -35,3 +41,15 @@ def signup(request):
 
 def characters_index(request):
   return render(request, '')
+
+def convert(obj):
+  text = json.dumps(obj, sort_keys=True, indent=2)
+
+# create and update function makes these calls
+char_class = 'bard'
+level = '20'
+response = requests.get(f"https://www.dnd5eapi.co/api/classes/{char_class}/levels/{level}/spells").json()["results"]
+
+for res in response:
+  spell,_ = Spell.objects.get_or_create(name=res["name"])
+  # add to character
