@@ -15,6 +15,9 @@ import json
 #home view
 class Home(LoginView):
   template_name = 'home.html'
+#about view
+def about(request):
+  return render(request, 'about.html')
 #character index view
 @login_required
 def char_index(request):
@@ -46,10 +49,11 @@ def convert(obj):
   text = json.dumps(obj, sort_keys=True, indent=2)
 
 # create and update function makes these calls
-char_class = 'bard'
-level = '20'
-response = requests.get(f"https://www.dnd5eapi.co/api/classes/{char_class}/levels/{level}/spells").json()["results"]
+def spell_api_call(request):
+  char_class = 'bard'
+  level = '1'
+  response = requests.get(f"https://www.dnd5eapi.co/api/classes/{char_class}/levels/{level}/spells").json()["results"]
 
-for res in response:
-  spell,_ = Spell.objects.get_or_create(name=res["name"])
-  # add to character
+  for res in response:
+    spell,_ = Spell.objects.get_or_create(name=res["name"])
+    # add to character
