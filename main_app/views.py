@@ -1,8 +1,10 @@
-from main_app.models import Character, Spell
+from .models import Character, Spell, Photo
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -44,8 +46,10 @@ def signup(request):
   context = {'form': form, 'error_message': error_message}
   return render(request, 'signup.html', context)
 
+@login_required
 def characters_index(request):
-  return render(request, '')
+  characters = Character.objects.filter(user=request.user)
+  return render(request, 'characters/index.html', { 'characters': characters })
 
 def convert(obj):
   text = json.dumps(obj, sort_keys=True, indent=2)
@@ -59,3 +63,9 @@ def spell_api_call(request):
   for res in response:
     spell,_ = Spell.objects.get_or_create(name=res["name"])
     # add to character
+
+def characters_detail(request, character_id):
+  character = Character.objects.get(id=character_id)
+  return render(request, 'characters/detail.html', { 
+    'character': character
+  })

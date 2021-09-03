@@ -1,3 +1,4 @@
+from os import name
 from django.urls import path
 from . import views
 
@@ -9,5 +10,7 @@ urlpatterns = [
     path('characters/', views.character_index, name='character_index'),
 
     path('accounts/signup/', views.signup, name='signup'),
+
+    path('characters/<int:character_id>/', views.characters_detail, name='characters_detail')
 
 ]
