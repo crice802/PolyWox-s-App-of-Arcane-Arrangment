@@ -48,7 +48,7 @@ def signup(request):
 
 @login_required
 def characters_index(request):
-  characters = Character.objects.filter(user=request.user)
+  characters = Character.objects.filter(player=request.user)
   return render(request, 'characters/index.html', { 'characters': characters })
 
 def convert(obj):
@@ -69,3 +69,21 @@ def characters_detail(request, character_id):
   return render(request, 'characters/detail.html', { 
     'character': character
   })
+
+class CharacterCreate(LoginRequiredMixin ,CreateView):
+  model = Character
+  fields = ['name', 'char_class', 'level', 'player']
+
+  def form_valid(self, form):
+    form.instance.player = self.request.user
+
+    return super().form_valid(form)
+
+class CharacterUpdate(LoginRequiredMixin ,UpdateView):
+  model = Character
+  fields = ['level']
+
+class CharacterDelete(LoginRequiredMixin ,DeleteView):
+  model = Character
+  success_url = '/characters/'
+

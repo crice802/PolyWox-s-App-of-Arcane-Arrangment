@@ -29,9 +29,9 @@
    <nav>
         <ul>
           {% if user.is_authenticated %}
-            <li><a href="">All Characters</a></li>
+            <li><a href="{% url 'characters_index' %}">All Characters</a></li>
             
-            <li><a href="">Add a Character</a></li>
+            <li><a href="{% url 'characters_create' %}">Add a Character</a></li>
             
             <li><a href="{% url 'about' %}">About</a></li>
             <li><a href="{% url 'logout' %}">Log out</a></li>
