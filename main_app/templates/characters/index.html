@@ -19,24 +19,24 @@
   {% for character in characters %}
     <div class="card">
       {% comment %} Add this line {% endcomment %}
-      <a href="{% url 'characters_detail' character.id %}">
+      {% comment %} <a href="{% url 'characters_detail' character.id %}"> {% endcomment %}
         <div class="card-content">
           <div class="card-img-container">
           {% if character.photo.url %}
             <img 
-                src="" 
-                alt=""
+                src="{{character.photo.url}}" 
+                alt="A photo of {{character.name}}"
                 class="usr-img"
               >
           {% else %}
             <img 
-              src="" 
-              alt=""
+              src="{% static 'images/character_placeholder.png' %}" 
+              alt="Sillouette of a Character"
             >
           {% endif %}
           </div>
-          <h2 class="card-title">{{  }}</h2>
-         
+           <h2 class="card-title">{{ character.name }}</h2>
+            <p>A {{ character.name }} is playing {{ character.char_class}} level {{ character.level}}.</p>
         </div>
       {% comment %} And this line {% endcomment %}
       </a>

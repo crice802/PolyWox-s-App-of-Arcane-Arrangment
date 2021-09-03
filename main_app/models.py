@@ -20,6 +20,14 @@ CLASS_CHOICE = (
   ('warlock', 'warlock'),
   ('wizard', 'wizard')
 )
+class Spell(models.Model):
+  name = models.CharField(max_length=50)
+  description = models.CharField(max_length=10000)
+  level = models.IntegerField()
+  higher_level = models.CharField(max_length=10000)
+
+  def __str__(self):
+    return self.name
 
 class Character(models.Model):
   player = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -32,15 +40,18 @@ class Character(models.Model):
     default=1,
     validators=[MaxValueValidator(20), MinValueValidator(1)]
   )
-  spell_list = models.CharField(max_length=10000)
+  spell_list = models.ManyToManyField(Spell, blank=True, null=True)
+
+  def __str__(self):
+    return self.name
+
+  
   
 
 class Photo(models.Model):
   url = models.CharField(max_length=250)
   character = models.OneToOneField(Character, on_delete=models.CASCADE)
 
-class Spell(models.Model):
-  name = models.CharField(max_length=50)
-  description = models.CharField(max_length=10000)
-  level = models.IntegerField()
-  higher_level = models.CharField(max_length=10000)
+  def __str__(self):
+    return f"Photo for character_id: {self.character_id} @{self.url}"
+

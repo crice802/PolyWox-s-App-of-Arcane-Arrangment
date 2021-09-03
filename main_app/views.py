@@ -1,4 +1,4 @@
-from main_app.models import Spell
+from main_app.models import Character, Spell
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.views import LoginView
@@ -20,9 +20,11 @@ def about(request):
   return render(request, 'about.html')
 #character index view
 @login_required
-def char_index(request):
-  return HttpResponse('<h1>this is char index page</h1>')
-
+def character_index(request):
+  characters = Character.objects.filter(player=request.user)
+  return render(request, 'characters/index.html', {
+    'characters': characters
+  })
 def signup(request):
   error_message = ''
   if request.method == 'POST':
