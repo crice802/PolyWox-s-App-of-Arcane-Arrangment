@@ -6,16 +6,13 @@
   href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" 
   rel="stylesheet" 
 />
-<script 
-  src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"
->
-</script>
+
 <link 
   rel="stylesheet" 
   type="text/css" 
   href="{% static 'css/character-detail.css' %}"
 />
-
+<script defer src="{% static 'js/character-detail.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -58,5 +55,55 @@
   {% comment %} New markup above {% endcomment %}
   </div>
 </section>
-
+<section class="spells">
+    <div class="subsection-title">
+      <h2>Spells</h2>
+      <img src=f"{% static 'images/{{character.char_class}}.png' %}" />
+    </div>
+<h3>{{ character.name }}'s Spells</h3>
+    <div class="subsection-content">
+      {% if character.spells.count %}
+        {% for spell in character.spells.all %}
+          <div class="spell-container">
+            <div 
+              class="color-block"
+             
+            ></div>
+            <a href="{% url 'spells_detail' spell.id %}">
+              <p> {{ spell.name }}</p>
+            </a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="no-spells">{{character.name}} doesn't have any spells 😞</p>
+      {% endif %}
+    </div>
+    <h3>Learned Spells</h3>
+    <div class="subsection-content">
+      {% comment %} We'll display learned_spells here {% endcomment %}
+      {% if spells.count %}
+        {% for spell in spells.all  %}
+           <div class="spell-container">
+            <div 
+              class="color-block"
+              
+            ></div>
+            <a href="{% url 'spells_detail' spell.id %}">
+              <p>A {{ spell.name }}</p>
+            </a>
+            <form action="{% url 'assoc_spell' character.id spell.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn submit">Learn Spell</button>
+            </form>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="all-spells">
+          {{character.name}} already has learned all the available spells 🥳
+        </p>
+      {% endif %}
+    </div>
+  </section>
+</div>
+</div>
 {% endblock %}

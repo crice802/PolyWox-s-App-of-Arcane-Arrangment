@@ -28,6 +28,10 @@ class Spell(models.Model):
 
   def __str__(self):
     return self.name
+  
+  def get_absolute_url(self):
+      return reverse("spells_detail", kwargs={"pk": self.id})
+  
 
 class Character(models.Model):
   player = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -41,6 +45,7 @@ class Character(models.Model):
     validators=[MaxValueValidator(20), MinValueValidator(1)]
   )
   spell_list = models.ManyToManyField(Spell, blank=True, null=True)
+  
 
   def __str__(self):
     return self.name

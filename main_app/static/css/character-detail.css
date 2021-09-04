@@ -41,7 +41,7 @@
   margin: 0 8px;
 }
 
-.toy-container {
+.spell-container {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -117,13 +117,13 @@
 }
 
 .feedings h2,
-.toys h2 {
+.spells h2 {
   font-size: 3.2rem;
   margin: 0;
 }
 
 .feedings h3,
-.toys h3 {
+.spells h3 {
   font-size: var(--font-xl);
   margin: 10px 0;
 }
@@ -162,16 +162,16 @@
   background-color: #f3f3fd;
 }
 
-.toy-container p {
+.spell-container p {
   margin: 12px 0;
 }
 
-.toy-container a {
+.spell-container a {
   text-decoration: none;
   color: #111;
 }
 
-.toy-container .btn {
+.spell-container .btn {
   padding: 3px 10px;
   margin-left: 10px;
 }

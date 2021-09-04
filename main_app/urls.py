@@ -21,4 +21,12 @@ urlpatterns = [
 
     path('characters/<int:character_id>/add_photo/', views.add_photo, name='add_photo'),
 
+    path('characters/<int:character_id>/assoc_spell/<int:spell_id>/', views.assoc_spell, name='assoc_spell'),
+
+    path('spells/create/', views.spell_api_call, name='spells_create'),
+
+    path('spells/<int:pk>/', views.SpellDetail.as_view(), name='spells_detail'),
+
+    path('spells/', views.SpellList.as_view(), name='spells_index'),
+
 ]

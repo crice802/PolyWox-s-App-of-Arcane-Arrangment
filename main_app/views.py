@@ -70,8 +70,9 @@ def spell_api_call(request):
 
 def characters_detail(request, character_id):
   character = Character.objects.get(id=character_id)
+  spells_character_does_not_have = Spell.objects.exclude(id__in = character.spell_list.all().values_list('id'))
   return render(request, 'characters/detail.html', { 
-    'character': character
+    'character': character, 'spells': spells_character_does_not_have
   })
 
 class CharacterCreate(LoginRequiredMixin ,CreateView):
@@ -115,4 +116,14 @@ def add_photo(request, character_id):
     except Exception as err:
       print('An error occurred uploading file to S3: %s' % err)
   return redirect('characters_detail', character_id=character_id)
+
+def assoc_spell(request, character_id, spell_id):
+  Character.objects.get(id=character_id).spells.add(spell_id)
+  return redirect('characters_detail', character_id=character_id)
+
+class SpellList(ListView):
+  model = Spell
+
+class SpellDetail(DetailView):
+  model = Spell
 
