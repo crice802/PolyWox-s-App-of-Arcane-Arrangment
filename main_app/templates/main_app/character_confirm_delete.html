@@ -3,8 +3,8 @@
 <div class="page-header">
   <h1>Delete Character?</h1>
   <img
-    src=""
-    alt=""
+     src="{{character.photo.url}}" or "{% static 'images/character_placeholder.png' %}" 
+     alt="A photo of {{character.name}}" or "Sillouette of a Character"
   />
 </div>
 <h2>Are you sure you want to delete {{ object.name }}?</h2>

@@ -12,7 +12,11 @@ from os import name
 from django.http import response
 import requests
 import json
+import uuid
+import boto3
 
+S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
+BUCKET = 'arcanearrangement'
 # Create your views here.
 #home view
 class Home(LoginView):
@@ -86,4 +90,29 @@ class CharacterUpdate(LoginRequiredMixin ,UpdateView):
 class CharacterDelete(LoginRequiredMixin ,DeleteView):
   model = Character
   success_url = '/characters/'
+
+def add_photo(request, character_id):
+  # photo-file will be the "name" attribute on the <input type="file">
+  photo_file = request.FILES.get('photo-file', None)
+  if photo_file:
+    s3 = boto3.client('s3')
+    # need a unique "key" for S3 / needs image file extension too
+		# uuid.uuid4().hex generates a random hexadecimal Universally Unique Identifier
+    # Add on the file extension using photo_file.name[photo_file.name.rfind('.'):]
+    key = uuid.uuid4().hex + photo_file.name[photo_file.name.rfind('.'):]
+    # just in case something goes wrong
+    try:
+      s3.upload_fileobj(photo_file, BUCKET, key)
+      # build the full url string
+      url = f"{S3_BASE_URL}{BUCKET}/{key}"
+      # we can assign to character_id or character (if you have a character object)
+      photo = Photo(url=url, character_id=character_id)
+      # Remove old photo if it exists
+      character_photo = Photo.objects.filter(character_id=character_id)
+      if character_photo.first():
+        character_photo.first().delete()
+      photo.save()
+    except Exception as err:
+      print('An error occurred uploading file to S3: %s' % err)
+  return redirect('characters_detail', character_id=character_id)
 

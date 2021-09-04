@@ -19,4 +19,6 @@ urlpatterns = [
 
     path('characters/<int:pk>/delete/', views.CharacterDelete.as_view(), name='characters_delete'),
 
+    path('characters/<int:character_id>/add_photo/', views.add_photo, name='add_photo'),
+
 ]
