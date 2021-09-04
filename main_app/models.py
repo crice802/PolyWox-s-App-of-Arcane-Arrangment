@@ -25,6 +25,7 @@ class Spell(models.Model):
   description = models.CharField(max_length=10000)
   level = models.IntegerField()
   higher_level = models.CharField(max_length=10000)
+  url = models.CharField(max_length=250)
 
   def __str__(self):
     return self.name
