@@ -11,14 +11,16 @@
 
 {% block content %}
   
-<div class="card" style="border-color: {{ spell.color }}">
-  <div class="card-bg" style="background-color: {{ spell.color }}"></div>
+<div class="card" >
+  <div class="card-bg"></div>
   <div class="card-content">
     <h2>{{ spell.name }}</h2>
-    <p>A {{ spell.color }} spell</p>
+    <p>{{ spell.level }}</p>
+    <p>{{ spell.desc }}</p>
+    <p>{{ spell.range }}</p>
+    <p>{{ spell.duration }}</p>
+    <p>{{ spell.casting_time }}</p>
   </div>
 </div>
-<a href="{% url 'spells_update' spell.id %}" class="btn warn">Edit</a>
-<a href="{% url 'spells_delete' spell.id %}" class="btn danger">Delete</a>
 
 {% endblock %}

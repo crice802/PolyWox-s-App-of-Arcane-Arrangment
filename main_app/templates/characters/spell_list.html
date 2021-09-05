@@ -22,11 +22,10 @@
 <section class="card-container">
   {% for spell in spell_list %}
   <div class="card" style="border-color: {{ spell.color }}">
-    <div class="card-bg" style="background-color: {{ spell.color }}"></div>
+    <div class="card-bg" ></div>
     <a href="{% url 'spells_detail' spell.id %}">
       <div class="card-content">
         <h2>{{ spell.name }}</h2>
-        <p>A {{ spell.color }} spell</p>
       </div>
     </a>
   </div>

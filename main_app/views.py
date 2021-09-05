@@ -15,6 +15,12 @@ import json
 import uuid
 import boto3
 
+from main_app import models
+
+CHAR_LEVEL =f"{Character.level}"
+CHAR_CLASS =f"{Character.char_class}"
+SPELL_URL =f"{Spell.url}"
+API_BASE_URL = 'https://www.dnd5eapi.co'
 S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
 BUCKET = 'arcanearrangement'
 # Create your views here.
@@ -59,14 +65,18 @@ def convert(obj):
   text = json.dumps(obj, sort_keys=True, indent=2)
 
 # create and update function makes these calls
-def spell_api_call(request):
-  char_class = 'bard'
-  level = '1'
-  response = requests.get(f"https://www.dnd5eapi.co/api/classes/{char_class}/levels/{level}/spells").json()["results"]
+def spell_level_search(request):
+  response = requests.get(f"{API_BASE_URL}/api/classes/{CHAR_CLASS}/levels/{CHAR_LEVEL}/spells").json()["results"]
 
   for res in response:
-    spell,_ = Spell.objects.get_or_create(name=res["name"])
+    spell,_ = Spell.objects.get_or_create(name=res["name"], url=res["url"])
     # add to character
+    character_id = models.Character.id
+    spell_id = spell.id
+    Character.objects.get(id=character_id).spell_list.add(spell_id)
+
+def spell_details(request):
+  response = requests.get(f"{API_BASE_URL}{SPELL_URL}")/json()["results"]
 
 def characters_detail(request, character_id):
   character = Character.objects.get(id=character_id)
