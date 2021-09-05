@@ -1,3 +1,4 @@
+from django.db.models import fields
 from .models import Character, Spell, Photo
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -61,12 +62,10 @@ def characters_index(request):
   characters = Character.objects.filter(player=request.user)
   return render(request, 'characters/index.html', { 'characters': characters })
 
-def convert(obj):
-  text = json.dumps(obj, sort_keys=True, indent=2)
-
-# create and update function makes these calls
+# create  function makes this call
 def spell_level_search(request):
-  response = requests.get(f"{API_BASE_URL}/api/classes/{CHAR_CLASS}/levels/{CHAR_LEVEL}/spells").json()["results"]
+  response = requests.get(f"{API_BASE_URL}/api/classes/{CHAR_CLASS}/levels/{CHAR_LEVEL}/spells")
+  spelldata = response.json()
 
   for res in response:
     spell,_ = Spell.objects.get_or_create(name=res["name"], url=res["url"])
@@ -74,9 +73,17 @@ def spell_level_search(request):
     character_id = models.Character.id
     spell_id = spell.id
     Character.objects.get(id=character_id).spell_list.add(spell_id)
+  
+  return render(request, 'characters/spell_list.html', {
+    'name': spelldata['name'], 'url': spelldata['url']
+  })
 
-def spell_details(request):
-  response = requests.get(f"{API_BASE_URL}{SPELL_URL}")/json()["results"]
+def spell_details(request, spell_id):
+  response = requests.get(f"{API_BASE_URL}{SPELL_URL}")
+  spelldata = response.json()
+  return render(request, 'characters/spell_detail.html', {
+    "name": spelldata['name'], "level": spelldata['level'], 'desc': spelldata['desc'], 'range': spelldata['range'], 'duration': spelldata['duration'], 'casting_time': spelldata['casting_time']
+  })
 
 def characters_detail(request, character_id):
   character = Character.objects.get(id=character_id)
@@ -133,6 +140,7 @@ def assoc_spell(request, character_id, spell_id):
 
 class SpellList(ListView):
   model = Spell
+  fields = ['name']
 
 class SpellDetail(DetailView):
   model = Spell
