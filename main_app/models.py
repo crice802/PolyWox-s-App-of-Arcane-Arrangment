@@ -21,10 +21,7 @@ CLASS_CHOICE = (
   ('wizard', 'wizard')
 )
 class Spell(models.Model):
-  name = models.CharField(max_length=50)
-  description = models.CharField(max_length=10000)
-  level = models.IntegerField()
-  higher_level = models.CharField(max_length=10000)
+  name = models.CharField(max_length=250)
   url = models.CharField(max_length=250)
 
   def __str__(self):
@@ -45,7 +42,7 @@ class Character(models.Model):
     default=1,
     validators=[MaxValueValidator(20), MinValueValidator(1)]
   )
-  spell_list = models.ManyToManyField(Spell, blank=True, null=True)
+  spell_list = models.ManyToManyField(Spell, blank=True)
   
 
   def __str__(self):
