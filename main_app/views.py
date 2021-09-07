@@ -64,6 +64,7 @@ def characters_index(request):
   return render(request, 'characters/index.html', { 'characters': characters })
 
 # create  function makes this call
+@login_required
 def spell_level_search(request, character_id):
   character = Character.objects.get(id=character_id)
   response = requests.get(f"{API_BASE_URL}/api/classes/{character.char_class}/levels/{character.level}/spells")
@@ -85,7 +86,7 @@ def spell_level_search(request, character_id):
 # class SpellCreate(CreateView):
 #   model = Spell
 #   fields = '__all__'
-
+@login_required
 def spell_details(request, spell_id):
   response = requests.get(f"{API_BASE_URL}{SPELL_URL}")
   spelldata = response.json()
@@ -93,6 +94,7 @@ def spell_details(request, spell_id):
     "name": spelldata['name'], "level": spelldata['level'], 'desc': spelldata['desc'], 'range': spelldata['range'], 'duration': spelldata['duration'], 'casting_time': spelldata['casting_time']
   })
 
+@login_required
 def characters_detail(request, character_id):
   character = Character.objects.get(id=character_id)
   spells_character_does_not_have = Spell.objects.exclude(id__in = character.spell_list.all().values_list('id'))
@@ -117,6 +119,7 @@ class CharacterDelete(LoginRequiredMixin ,DeleteView):
   model = Character
   success_url = '/characters/'
 
+@login_required
 def add_photo(request, character_id):
   # photo-file will be the "name" attribute on the <input type="file">
   photo_file = request.FILES.get('photo-file', None)
@@ -142,14 +145,15 @@ def add_photo(request, character_id):
       print('An error occurred uploading file to S3: %s' % err)
   return redirect('characters_detail', character_id=character_id)
 
+@login_required
 def assoc_spell(request, character_id, spell_id):
   Character.objects.get(id=character_id).spell_list.add(spell_id)
   return redirect('characters_detail', character_id=character_id)
 
-class SpellList(ListView):
+class SpellList(LoginRequiredMixin ,ListView):
   model = Spell
   fields = ['name']
 
-class SpellDetail(DetailView):
+class SpellDetail(LoginRequiredMixin ,DetailView):
   model = Spell
 
