@@ -69,16 +69,11 @@ def spell_level_search(request, character_id):
   character = Character.objects.get(id=character_id)
   response = requests.get(f"{API_BASE_URL}/api/classes/{character.char_class}/levels/{character.level}/spells")
   spelldata = response.json()
-  # print('response', spelldata['response'])
   for res in spelldata['results']:
-    # print('res[url], res[name]' ,res['url'], res['name'])
     spell = Spell.objects.get_or_create(name=res["name"], url=res["url"])[0]
-    # add to character
-    # print('spell', spell)
     spell_id = spell.id
     Character.objects.get(id=character_id).spell_list.add(spell_id)
 
-  
   return render(request, 'characters/detail.html', {
     # 'name': spelldata['name'], 'url': spelldata['url']
   })
@@ -88,9 +83,10 @@ def spell_level_search(request, character_id):
 #   fields = '__all__'
 @login_required
 def spell_details(request, spell_id):
-  response = requests.get(f"{API_BASE_URL}{SPELL_URL}")
+  spell = Spell.objects.get(id=spell_id)
+  response = requests.get(f"{API_BASE_URL}{spell.url}")
   spelldata = response.json()
-  return render(request, 'characters/spell_detail.html', {
+  return render(request, 'main_app/spell_detail.html', {
     "name": spelldata['name'], "level": spelldata['level'], 'desc': spelldata['desc'], 'range': spelldata['range'], 'duration': spelldata['duration'], 'casting_time': spelldata['casting_time']
   })
 

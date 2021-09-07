@@ -27,7 +27,7 @@ urlpatterns = [
     
     path('spells/create/', views.spell_level_search, name='spells_create'),
 
-    path('spells/<int:pk>/', views.SpellDetail.as_view(), name='spells_detail'),
+    path('spells/<int:pk>/', views.spell_details, name='spells_detail'),
 
     path('spells/', views.SpellList.as_view(), name='spells_index'),
 

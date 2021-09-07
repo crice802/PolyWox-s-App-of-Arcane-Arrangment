@@ -58,7 +58,7 @@
     </div>
 <h3>{{ character.name }}'s Spells</h3>
     <div class="subsection-content">
-      {% if character.spells.count %}
+      {% if character.spells.count >= character.level  %}
         {% for spell in character.spell_list.all %}
           <div class="spell-container">
             <div 
