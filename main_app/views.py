@@ -1,3 +1,4 @@
+from django.conf.urls import url
 from django.db.models import fields
 from .models import Character, Spell, Photo
 from django.shortcuts import render, redirect
@@ -18,8 +19,8 @@ import boto3
 
 from main_app import models
 
-CHAR_LEVEL =f"{Character.level}"
-CHAR_CLASS =f"{Character.char_class}"
+# CHAR_LEVEL =f"{Character.level}"
+# CHAR_CLASS =f"{Character.char_class}"
 SPELL_URL =f"{Spell.url}"
 API_BASE_URL = 'https://www.dnd5eapi.co'
 S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
@@ -63,20 +64,27 @@ def characters_index(request):
   return render(request, 'characters/index.html', { 'characters': characters })
 
 # create  function makes this call
-def spell_level_search(request):
-  response = requests.get(f"{API_BASE_URL}/api/classes/{CHAR_CLASS}/levels/{CHAR_LEVEL}/spells")
+def spell_level_search(request, character_id):
+  character = Character.objects.get(id=character_id)
+  response = requests.get(f"{API_BASE_URL}/api/classes/{character.char_class}/levels/{character.level}/spells")
   spelldata = response.json()
-
-  for res in response:
-    spell,_ = Spell.objects.get_or_create(name=res["name"], url=res["url"])
+  # print('response', spelldata['response'])
+  for res in spelldata['results']:
+    # print('res[url], res[name]' ,res['url'], res['name'])
+    spell = Spell.objects.get_or_create(name=res["name"], url=res["url"])[0]
     # add to character
-    character_id = models.Character.id
+    # print('spell', spell)
     spell_id = spell.id
     Character.objects.get(id=character_id).spell_list.add(spell_id)
+
   
-  return render(request, 'characters/spell_list.html', {
-    'name': spelldata['name'], 'url': spelldata['url']
+  return render(request, 'characters/detail.html', {
+    # 'name': spelldata['name'], 'url': spelldata['url']
   })
+
+# class SpellCreate(CreateView):
+#   model = Spell
+#   fields = '__all__'
 
 def spell_details(request, spell_id):
   response = requests.get(f"{API_BASE_URL}{SPELL_URL}")

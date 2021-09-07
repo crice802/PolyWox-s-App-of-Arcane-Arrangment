@@ -2,10 +2,6 @@
 {% load static %}
 
 {% block head %}
-<link 
-  href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" 
-  rel="stylesheet" 
-/>
 
 <link 
   rel="stylesheet" 
@@ -58,12 +54,12 @@
 <section class="spells">
     <div class="subsection-title">
       <h2>Spells</h2>
-      <img src=f"{% static 'images/{{character.char_class}}.png' %}" />
+      {% comment %} <img src="{% static 'images/{{character.char_class}}.png' %}" /> {% endcomment %}
     </div>
 <h3>{{ character.name }}'s Spells</h3>
     <div class="subsection-content">
       {% if character.spells.count %}
-        {% for spell in character.spells.all %}
+        {% for spell in character.spell_list.all %}
           <div class="spell-container">
             <div 
               class="color-block"
@@ -89,7 +85,7 @@
               
             ></div>
             <a href="{% url 'spells_detail' spell.id %}">
-              <p>A {{ spell.name }}</p>
+              <p>{{ spell.name }}</p>
             </a>
             <form action="{% url 'assoc_spell' character.id spell.id %}" method="post">
               {% csrf_token %}
@@ -102,7 +98,9 @@
           {{character.name}} already has learned all the available spells 🥳
         </p>
       {% endif %}
-      <button type="submt" class="btn submit" onClick=f"{spell_level_search}">Search Spell</button>
+      <form action={% url 'spells_create' character.id %} method="GET">
+        <button type="submit" class="btn submit" >Search Spell</button>
+      </form>
     </div>
   </section>
 </div>
