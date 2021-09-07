@@ -16,7 +16,7 @@ import requests
 import json
 import uuid
 import boto3
-
+from .forms import SpellForm
 from main_app import models
 
 # CHAR_LEVEL =f"{Character.level}"
@@ -74,21 +74,25 @@ def spell_level_search(request, character_id):
     spell_id = spell.id
     Character.objects.get(id=character_id).spell_list.add(spell_id)
 
-  return render(request, 'characters/detail.html', {
-    # 'name': spelldata['name'], 'url': spelldata['url']
-  })
+  return render(request, 'characters/detail.html')
+  #  {
+  #   'name': spelldata['name'], 'url': spelldata['url']
+  # })
 
 # class SpellCreate(CreateView):
 #   model = Spell
 #   fields = '__all__'
 @login_required
 def spell_details(request, spell_id):
+ 
   spell = Spell.objects.get(id=spell_id)
   response = requests.get(f"{API_BASE_URL}{spell.url}")
   spelldata = response.json()
+  print(spelldata)
   return render(request, 'main_app/spell_detail.html', {
     "name": spelldata['name'], "level": spelldata['level'], 'desc': spelldata['desc'], 'range': spelldata['range'], 'duration': spelldata['duration'], 'casting_time': spelldata['casting_time']
   })
+ 
 
 @login_required
 def characters_detail(request, character_id):
@@ -107,9 +111,20 @@ class CharacterCreate(LoginRequiredMixin ,CreateView):
 
     return super().form_valid(form)
 
+# def character_update(request, character_id, spell_id):
+#   character = Character.objects.get(id=character_id)
+#   new_spell = None
+#   form = SpellForm(request.POST)
+#   if form.is_valid():
+#     new_spell = form.save(commit=False)
+#     new_spell.spell_id = spell_id
+#     new_spell.save()
+#   else:
+#     form = SpellForm()
+#   return redirect('characters_detail', character_id=character_id)
 class CharacterUpdate(LoginRequiredMixin ,UpdateView):
   model = Character
-  fields = ['level']
+  fields = ['level', 'spell_list']
 
 class CharacterDelete(LoginRequiredMixin ,DeleteView):
   model = Character

@@ -28,7 +28,7 @@ class Spell(models.Model):
     return self.name
   
   def get_absolute_url(self):
-      return reverse("spells_detail", kwargs={"pk": self.id})
+      return reverse("spells_detail", kwargs={"spell_id": self.id})
   
 
 class Character(models.Model):

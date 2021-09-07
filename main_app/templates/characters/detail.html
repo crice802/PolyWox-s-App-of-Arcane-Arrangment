@@ -56,9 +56,9 @@
       <h2>Spells</h2>
       {% comment %} <img src="{% static 'images/{{character.char_class}}.png' %}" /> {% endcomment %}
     </div>
-<h3>{{ character.name }}'s Spells</h3>
+<h3>{{ character.name }}'s Learned Spells</h3>
     <div class="subsection-content">
-      {% if character.spells.count >= character.level  %}
+      {% if character.spell_list.count  %}
         {% for spell in character.spell_list.all %}
           <div class="spell-container">
             <div 
@@ -74,7 +74,7 @@
         <p class="no-spells">{{character.name}} doesn't have any spells 😞</p>
       {% endif %}
     </div>
-    <h3>Learned Spells</h3>
+    <h3>Available Spells</h3>
     <div class="subsection-content">
       {% comment %} We'll display learned_spells here {% endcomment %}
       {% if spells.count %}
