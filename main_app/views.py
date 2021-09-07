@@ -143,7 +143,7 @@ def add_photo(request, character_id):
   return redirect('characters_detail', character_id=character_id)
 
 def assoc_spell(request, character_id, spell_id):
-  Character.objects.get(id=character_id).spells.add(spell_id)
+  Character.objects.get(id=character_id).spell_list.add(spell_id)
   return redirect('characters_detail', character_id=character_id)
 
 class SpellList(ListView):
