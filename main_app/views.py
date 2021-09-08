@@ -29,9 +29,6 @@ BUCKET = 'arcanearrangement'
 #home view
 class Home(LoginView):
   template_name = 'home.html'
-#about view
-def about(request):
-  return render(request, 'about.html')
 #character index view
 @login_required
 def character_index(request):

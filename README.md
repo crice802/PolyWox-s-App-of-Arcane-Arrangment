@@ -185,5 +185,5 @@ class Character(models.Model):
 # **API Reference:**
 http://www.dnd5eapi.co/docs
 # **Credits:**
-css inpired by [David Stinson](https://www.linkedin.com/in/david-stinson/)<br>
+css inpired by [David Stinson](https://www.linkedin.com/in/david-stinson/)<br>![raving david](main_app/static/images/logo.gif)<br>
 Ben Manley
