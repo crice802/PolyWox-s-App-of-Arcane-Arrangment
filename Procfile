@@ -1,1 +1,1 @@
-web: gunicorn <your-project-name-here>.wsgi
+web: gunicorn arcane_arrangement.wsgi
