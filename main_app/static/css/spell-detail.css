@@ -1,4 +1,4 @@
-/* main {
+main {
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
@@ -6,8 +6,8 @@
 }
 
 .card {
-  width: 224px;
-  height: 224px;
+  width: 80vmin;
+  /* height: 80vmin; */
   margin: 25px 25px 15px 40px;
   border: solid 2px;
   box-shadow: var(--card-box-shadow);
@@ -29,8 +29,8 @@
   height: 100%;
   width: 100%;
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
+  align-items: flex-start;
+  justify-content: flex-start;
   flex-direction: column;
   color: var(--text-color);
 }
@@ -46,7 +46,7 @@
 }
 
 .card p {
-  margin: 0;
+  margin: 4px;
   font-size: var(--font-reg);
   z-index: 1;
-} */
+}
