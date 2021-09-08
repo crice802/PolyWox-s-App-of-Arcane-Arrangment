@@ -61,7 +61,7 @@ def signup(request):
 @login_required
 def characters_index(request):
   characters = Character.objects.filter(player=request.user)
-  return render(request, 'characters/index.html', { 'characters': characters })
+  return render(request, 'characters/index.html', { 'characters': characters})
 
 # create  function makes this call
 @login_required
@@ -74,10 +74,10 @@ def spell_level_search(request, character_id):
     spell_id = spell.id
     Character.objects.get(id=character_id).spell_list.add(spell_id)
 
-  return render(request, 'characters/detail.html')
-  #  {
-  #   'name': spelldata['name'], 'url': spelldata['url']
-  # })
+  return render(request, 'characters/detail.html',
+   {
+    'character': character
+  })
 
 # class SpellCreate(CreateView):
 #   model = Spell
