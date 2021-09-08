@@ -90,7 +90,7 @@ def spell_details(request, spell_id):
   spelldata = response.json()
   print(spelldata)
   return render(request, 'main_app/spell_detail.html', {
-    "name": spelldata['name'], "level": spelldata['level'], 'desc': spelldata['desc'], 'range': spelldata['range'], 'duration': spelldata['duration'], 'casting_time': spelldata['casting_time']
+    "name": spelldata['name'], "level": spelldata['level'], 'desc': spelldata['desc'], 'range': spelldata['range'], 'duration': spelldata['duration'], 'casting_time': spelldata['casting_time'], 
   })
  
 
