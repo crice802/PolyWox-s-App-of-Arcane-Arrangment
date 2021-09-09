@@ -76,9 +76,7 @@ def spell_level_search(request, character_id):
     'character': character
   })
 
-# class SpellCreate(CreateView):
-#   model = Spell
-#   fields = '__all__'
+
 @login_required
 def spell_details(request, spell_id):
  
@@ -108,17 +106,6 @@ class CharacterCreate(LoginRequiredMixin ,CreateView):
 
     return super().form_valid(form)
 
-# def character_update(request, character_id, spell_id):
-#   character = Character.objects.get(id=character_id)
-#   new_spell = None
-#   form = SpellForm(request.POST)
-#   if form.is_valid():
-#     new_spell = form.save(commit=False)
-#     new_spell.spell_id = spell_id
-#     new_spell.save()
-#   else:
-#     form = SpellForm()
-#   return redirect('characters_detail', character_id=character_id)
 class CharacterUpdate(LoginRequiredMixin ,UpdateView):
   model = Character
   fields = ['level', 'spell_list']
