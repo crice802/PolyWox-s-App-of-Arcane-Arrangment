@@ -186,4 +186,11 @@ class Character(models.Model):
 http://www.dnd5eapi.co/docs
 # **Credits:**
 css inpired by [David Stinson](https://www.linkedin.com/in/david-stinson/)<br>![raving david](main_app/static/images/logo.gif)<br>
-Ben Manley
+[Ben Manley](https://www.linkedin.com/in/benjamintmanley/)
+<br>Aftin Combs for the icons<br>
+[Blake Romano](https://www.linkedin.com/in/blakeromano/)
+<br>[David Nagarpowers](https://www.linkedin.com/in/david-nagarpowers/)<br>
+[Chitra Son](https://www.linkedin.com/in/chitrason/)
+<br>[Nicholas Rodriguez](https://www.linkedin.com/in/nicholas-r-rodriguez/)
+<br>
+[Damien Rhodes](https://www.linkedin.com/in/damiencrhodes/)
