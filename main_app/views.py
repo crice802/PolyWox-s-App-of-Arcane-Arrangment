@@ -92,14 +92,15 @@ def spell_details(request, spell_id):
 @login_required
 def characters_detail(request, character_id):
   character = Character.objects.get(id=character_id)
-  spells_character_does_not_have = Spell.objects.exclude(id__in = character.spell_list.all().values_list('id'))
+  # spells_character_does_not_have = Spell.objects.exclude(id__in = character.spell_list.all().values_list('id'))
   return render(request, 'characters/detail.html', { 
-    'character': character, 'spells': spells_character_does_not_have
+    'character': character, 
+    # 'spells': spells_character_does_not_have 
   })
 
 class CharacterCreate(LoginRequiredMixin ,CreateView):
   model = Character
-  fields = ['name', 'char_class', 'level', 'player']
+  fields = ['name', 'char_class', 'level']
 
   def form_valid(self, form):
     form.instance.player = self.request.user

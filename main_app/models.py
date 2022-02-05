@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.db.models.fields import CharField
 from django.urls import reverse
@@ -23,6 +24,7 @@ CLASS_CHOICE = (
 class Spell(models.Model):
   name = models.CharField(max_length=250)
   url = models.CharField(max_length=250)
+  
 
   def __str__(self):
     return self.name
@@ -42,7 +44,7 @@ class Character(models.Model):
     default=1,
     validators=[MaxValueValidator(20), MinValueValidator(1)]
   )
-  spell_list = models.ManyToManyField(Spell, blank=True)
+  spell_list = models.ForeignKey(Spell, blank=True, null=True, on_delete=models.CASCADE)
   
 
   def __str__(self):
